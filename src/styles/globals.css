@@ -1,6 +1,278 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   Blog8byte - Earth Tone Editorial Design System
+   Palette: warm cream, charcoal, sage green, terracotta
+   Style: Neo-Brutalist Editorial
+   ============================================================ */
 
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-sage: var(--sage);
+  --color-terracotta: var(--terracotta);
+  --color-cream: var(--cream);
+
+  --color-button-primary: var(--button-bg-primary);
+  --color-button-primary-hover: var(--button-hover-primary);
+  --color-button-primary-fg: var(--button-fg-primary);
+  
+  --color-button-secondary: var(--button-bg-secondary);
+  --color-button-secondary-hover: var(--button-hover-secondary);
+  --color-button-secondary-fg: var(--button-fg-secondary);
+}
+
+:root {
+  --background: #fdfbf7;
+  --foreground: #1c1917;
+  --card: #ffffff;
+  --card-foreground: #1c1917;
+  --popover: #ffffff;
+  --popover-foreground: #1c1917;
+
+  --primary: #1c1917;
+  --primary-foreground: #fdfbf7;
+  --secondary: #f5f0eb;
+  --secondary-foreground: #44403c;
+  --muted: #f5f0eb;
+  --muted-foreground: #78716c;
+  --accent: #849c8a;
+  --accent-foreground: #1c1917;
+  --destructive: #dc2626;
+
+  --border: #e7e5e4;
+  --input: #e7e5e4;
+  --ring: #849c8a;
+
+  --sage: #849c8a;
+  --terracotta: #c87965;
+  --cream: #fdfbf7;
+
+  --chart-1: #849c8a;
+  --chart-2: #c87965;
+  --chart-3: #d4a574;
+  --chart-4: #78716c;
+  --chart-5: #44403c;
+
+  --radius: 0.5rem;
+
+  --sidebar: #f5f0eb;
+  --sidebar-foreground: #1c1917;
+  --sidebar-primary: #1c1917;
+  --sidebar-primary-foreground: #fdfbf7;
+  --sidebar-accent: #e7e5e4;
+  --sidebar-accent-foreground: #1c1917;
+  --sidebar-border: #e7e5e4;
+  --sidebar-ring: #849c8a;
+
+  /* Component Tokens */
+  --button-bg-primary: var(--primary);
+  --button-fg-primary: var(--primary-foreground);
+  --button-hover-primary: color-mix(in srgb, var(--primary) 90%, transparent);
+  --button-bg-secondary: var(--secondary);
+  --button-fg-secondary: var(--secondary-foreground);
+  --button-hover-secondary: #e7e5e4; /* stone-200 */
+}
+
+.dark {
+  --background: #0c0a09;
+  --foreground: #fafaf9;
+  --card: #1c1917;
+  --card-foreground: #fafaf9;
+  --popover: #1c1917;
+  --popover-foreground: #fafaf9;
+  --primary: #fafaf9;
+  --primary-foreground: #0c0a09;
+  --secondary: #292524;
+  --secondary-foreground: #fafaf9;
+  --muted: #292524;
+  --muted-foreground: #a8a29e;
+  --accent: #849c8a;
+  --accent-foreground: #fafaf9;
+  --destructive: #ef4444;
+  --border: #292524;
+  --input: #292524;
+  --ring: #849c8a;
+  --chart-1: #849c8a;
+  --chart-2: #c87965;
+  --chart-3: #d4a574;
+  --chart-4: #a8a29e;
+  --chart-5: #78716c;
+  --sidebar: #1c1917;
+  --sidebar-foreground: #fafaf9;
+  --sidebar-primary: #849c8a;
+  --sidebar-primary-foreground: #fafaf9;
+  --sidebar-accent: #292524;
+  --sidebar-accent-foreground: #fafaf9;
+  --sidebar-border: #292524;
+  --sidebar-ring: #849c8a;
+
+  /* Component Tokens */
+  --button-bg-primary: var(--primary);
+  --button-fg-primary: var(--primary-foreground);
+  --button-hover-primary: color-mix(in srgb, var(--primary) 90%, transparent);
+  --button-bg-secondary: var(--secondary);
+  --button-fg-secondary: var(--secondary-foreground);
+  --button-hover-secondary: #44403c; /* stone-700 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--sage) 28%, transparent);
+  }
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl font-bold sm:text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold sm:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl font-semibold;
+  }
+}
+
+.blog-content {
+  @apply leading-relaxed text-foreground/90;
+}
+
+.blog-content h1 {
+  @apply mb-6 mt-10 text-3xl font-bold;
+}
+
+.blog-content h2 {
+  @apply mb-4 mt-8 text-2xl font-semibold;
+}
+
+.blog-content h3 {
+  @apply mb-3 mt-6 text-xl font-semibold;
+}
+
+.blog-content p {
+  @apply mb-4;
+}
+
+.blog-content ul,
+.blog-content ol {
+  @apply mb-4 ml-6 flex flex-col gap-1;
+}
+
+.blog-content ul {
+  @apply list-disc;
+}
+
+.blog-content ol {
+  @apply list-decimal;
+}
+
+.blog-content li {
+  @apply text-foreground/80;
+}
+
+.blog-content code {
+  @apply rounded bg-muted px-1.5 py-0.5 text-sm font-mono;
+}
+
+.blog-content pre {
+  @apply mb-4 overflow-x-auto rounded-lg bg-[#1c1917] p-4 text-sm text-[#fafaf9];
+}
+
+.blog-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.blog-content blockquote {
+  @apply my-4 border-l-4 border-sage pl-4 italic text-muted-foreground;
+}
+
+.blog-content strong {
+  @apply font-semibold text-foreground;
+}
+
+.blog-content hr {
+  @apply my-8 border-border;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

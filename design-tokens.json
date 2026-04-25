@@ -1,0 +1,145 @@
+{
+  "blog8byte": {
+    "global": {
+      "color": {
+        "stone": {
+          "50": { "$value": "#fafaf9", "$type": "color" },
+          "100": { "$value": "#f5f0eb", "$type": "color" },
+          "200": { "$value": "#e7e5e4", "$type": "color" },
+          "300": { "$value": "#d6d3d1", "$type": "color" },
+          "400": { "$value": "#a8a29e", "$type": "color" },
+          "500": { "$value": "#78716c", "$type": "color" },
+          "600": { "$value": "#57534e", "$type": "color" },
+          "700": { "$value": "#44403c", "$type": "color" },
+          "800": { "$value": "#292524", "$type": "color" },
+          "900": { "$value": "#1c1917", "$type": "color" },
+          "950": { "$value": "#0c0a09", "$type": "color" }
+        },
+        "sage": {
+          "500": { "$value": "#849c8a", "$type": "color" }
+        },
+        "terracotta": {
+          "500": { "$value": "#c87965", "$type": "color" }
+        },
+        "sand": {
+          "500": { "$value": "#d4a574", "$type": "color" }
+        },
+        "cream": {
+          "500": { "$value": "#fdfbf7", "$type": "color" }
+        },
+        "red": {
+          "500": { "$value": "#ef4444", "$type": "color" },
+          "600": { "$value": "#dc2626", "$type": "color" }
+        },
+        "white": { "$value": "#ffffff", "$type": "color" }
+      },
+      "spacing": {
+        "sm": { "$value": "0.5rem", "$type": "dimension" },
+        "md": { "$value": "1rem", "$type": "dimension" },
+        "lg": { "$value": "1.5rem", "$type": "dimension" }
+      },
+      "radius": {
+        "sm": { "$value": "0.3rem", "$type": "dimension" },
+        "md": { "$value": "0.4rem", "$type": "dimension" },
+        "lg": { "$value": "0.5rem", "$type": "dimension" },
+        "xl": { "$value": "0.7rem", "$type": "dimension" }
+      }
+    },
+    "semantic": {
+      "color": {
+        "background": {
+          "default": {
+            "$value": "{blog8byte.global.color.cream.500}",
+            "$type": "color",
+            "$description": "Main background for light mode"
+          },
+          "dark": {
+            "$value": "{blog8byte.global.color.stone.950}",
+            "$type": "color",
+            "$description": "Main background for dark mode"
+          }
+        },
+        "foreground": {
+          "default": { "$value": "{blog8byte.global.color.stone.900}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.50}", "$type": "color" }
+        },
+        "primary": {
+          "default": { "$value": "{blog8byte.global.color.stone.900}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.50}", "$type": "color" }
+        },
+        "primaryForeground": {
+          "default": { "$value": "{blog8byte.global.color.cream.500}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.950}", "$type": "color" }
+        },
+        "secondary": {
+          "default": { "$value": "{blog8byte.global.color.stone.100}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.800}", "$type": "color" }
+        },
+        "secondaryForeground": {
+          "default": { "$value": "{blog8byte.global.color.stone.700}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.50}", "$type": "color" }
+        },
+        "muted": {
+          "default": { "$value": "{blog8byte.global.color.stone.100}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.800}", "$type": "color" }
+        },
+        "mutedForeground": {
+          "default": { "$value": "{blog8byte.global.color.stone.500}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.400}", "$type": "color" }
+        },
+        "accent": {
+          "default": { "$value": "{blog8byte.global.color.sage.500}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.sage.500}", "$type": "color" }
+        },
+        "accentForeground": {
+          "default": { "$value": "{blog8byte.global.color.stone.900}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.50}", "$type": "color" }
+        },
+        "destructive": {
+          "default": { "$value": "{blog8byte.global.color.red.600}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.red.500}", "$type": "color" }
+        },
+        "border": {
+          "default": { "$value": "{blog8byte.global.color.stone.200}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.800}", "$type": "color" }
+        },
+        "input": {
+          "default": { "$value": "{blog8byte.global.color.stone.200}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.stone.800}", "$type": "color" }
+        },
+        "ring": {
+          "default": { "$value": "{blog8byte.global.color.sage.500}", "$type": "color" },
+          "dark": { "$value": "{blog8byte.global.color.sage.500}", "$type": "color" }
+        }
+      }
+    },
+    "component": {
+      "button": {
+        "primary": {
+          "bg": {
+            "default": { "$value": "{blog8byte.semantic.color.primary.default}", "$type": "color" },
+            "hover": { "$value": "{blog8byte.semantic.color.primary.default}", "$type": "color" },
+            "dark": { "$value": "{blog8byte.semantic.color.primary.dark}", "$type": "color" },
+            "darkHover": { "$value": "{blog8byte.semantic.color.primary.dark}", "$type": "color" }
+          },
+          "fg": {
+            "default": { "$value": "{blog8byte.semantic.color.primaryForeground.default}", "$type": "color" },
+            "dark": { "$value": "{blog8byte.semantic.color.primaryForeground.dark}", "$type": "color" }
+          }
+        },
+        "secondary": {
+          "bg": {
+            "default": { "$value": "{blog8byte.semantic.color.secondary.default}", "$type": "color" },
+            "hover": { "$value": "{blog8byte.global.color.stone.200}", "$type": "color" },
+            "dark": { "$value": "{blog8byte.semantic.color.secondary.dark}", "$type": "color" },
+            "darkHover": { "$value": "{blog8byte.global.color.stone.700}", "$type": "color" }
+          },
+          "fg": {
+            "default": { "$value": "{blog8byte.semantic.color.secondaryForeground.default}", "$type": "color" },
+            "dark": { "$value": "{blog8byte.semantic.color.secondaryForeground.dark}", "$type": "color" }
+          }
+        }
+      }
+    }
+  }
+}
