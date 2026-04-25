@@ -118,9 +118,9 @@ pnpm db:push
 pnpm db:seed
 ```
 
-The seeded admin credentials come from `.env`:
-- `ADMIN_DEFAULT_EMAIL`
-- `ADMIN_DEFAULT_PASSWORD`
+The seeded admin credentials come from `.env` (or default to these values if not set):
+- **Email:** `admin@blog8byte.com`
+- **Password:** `admin1234`
 
 ### 6. Run the Development Server
 Start the Next.js development server:
