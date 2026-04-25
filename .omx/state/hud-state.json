@@ -1,0 +1,5 @@
+{
+  "last_turn_at": "2026-04-25T08:50:33.670Z",
+  "turn_count": 12,
+  "last_agent_output": "The real bug was a schema/query mismatch, not the login handler itself.\n\nYour database column is `\"b"
+}
