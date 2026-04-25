@@ -42,6 +42,7 @@ A clean Git history is maintained using **Husky** and **lint-staged**.
 ### 5. Localization & Data Integrity 🇹🇭
 Designed to support the Thai localization requirements from the start:
 - Custom Zod schemas combined with specific Regex rules ensure accurate parsing and validation of Thai characters and localized numerical inputs, effectively eliminating garbage data issues.
+- **Example (Comment Validation):** We use a strict Unicode Regex (`/^[\u0E00-\u0E7F0-9\u0E50-\u0E59\s\n]+$/`) injected into Zod to completely block English spam, emojis, and special characters, allowing only valid Thai consonants, vowels, and digits.
 
 ### 6. Content Moderation & RBAC 👮
 Built-in Role-Based Access Control (RBAC) handles workflow constraints:
