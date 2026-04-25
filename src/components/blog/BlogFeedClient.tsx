@@ -9,6 +9,7 @@ import { Pagination } from "~/components/blog/Pagination";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "~/components/ui/empty";
 import { Button } from "~/components/ui/button";
 import { Link2Off } from "lucide-react";
+import Link from "next/link";
 
 interface BlogItem {
   id: number;
@@ -142,7 +143,7 @@ export function BlogFeedClient({
         </EmptyHeader>
         {search ? (
           <Button asChild variant="outline">
-            <a href="/">ล้างตัวกรองและกลับไปหน้าแรก</a>
+            <Link href="/">ล้างตัวกรองและกลับไปหน้าแรก</Link>
           </Button>
         ) : null}
       </Empty>

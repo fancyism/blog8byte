@@ -72,7 +72,7 @@ function sanitizeBaseName(fileName: string) {
 }
 
 function extensionFromFile(file: File) {
-  const explicitExtension = file.name.match(/\.[^/.]+$/)?.[0]?.toLowerCase();
+  const explicitExtension = /\.[^/.]+$/.exec(file.name)?.[0]?.toLowerCase();
   if (explicitExtension) return explicitExtension;
 
   if (file.type === "image/png") return ".png";
