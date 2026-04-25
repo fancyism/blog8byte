@@ -1,35 +1,23 @@
 import { relations } from "drizzle-orm";
-import { index, pgTableCreator, primaryKey } from "drizzle-orm/pg-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import {
+  index,
+  pgTableCreator,
+  primaryKey,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
+
+type AuthAccountType = "oauth" | "oidc" | "email" | "webauthn";
 
 /**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
+ * Multi-project schema prefix — all tables prefixed with `blog8byte_`
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const createTable = pgTableCreator((name) => `blog8byte_${name}`);
 
-export const posts = createTable(
-  "post",
-  (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }),
-    createdById: d
-      .varchar({ length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .$defaultFn(() => /* @__PURE__ */ new Date())
-      .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
-  }),
-  (t) => [
-    index("created_by_idx").on(t.createdById),
-    index("name_idx").on(t.name),
-  ],
-);
+// ============================================================
+// Users (NextAuth + Role-Based Access)
+// ============================================================
 
 export const users = createTable("user", (d) => ({
   id: d
@@ -40,17 +28,21 @@ export const users = createTable("user", (d) => ({
   name: d.varchar({ length: 255 }),
   email: d.varchar({ length: 255 }).notNull(),
   emailVerified: d
-    .timestamp({
-      mode: "date",
-      withTimezone: true,
-    })
-    .$defaultFn(() => /* @__PURE__ */ new Date()),
+    .timestamp({ mode: "date", withTimezone: true })
+    .$defaultFn(() => new Date()),
   image: d.varchar({ length: 255 }),
+  passwordHash: d.varchar({ length: 255 }),
+  role: d.varchar({ length: 50 }).notNull().default("user"),
 }));
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  blogs: many(blogs),
 }));
+
+// ============================================================
+// NextAuth Tables (accounts, sessions, verificationTokens)
+// ============================================================
 
 export const accounts = createTable(
   "account",
@@ -59,7 +51,7 @@ export const accounts = createTable(
       .varchar({ length: 255 })
       .notNull()
       .references(() => users.id),
-    type: d.varchar({ length: 255 }).$type<AdapterAccount["type"]>().notNull(),
+    type: d.varchar({ length: 255 }).$type<AuthAccountType>().notNull(),
     provider: d.varchar({ length: 255 }).notNull(),
     providerAccountId: d.varchar({ length: 255 }).notNull(),
     refresh_token: d.text(),
@@ -90,7 +82,7 @@ export const sessions = createTable(
       .references(() => users.id),
     expires: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
   }),
-  (t) => [index("t_user_id_idx").on(t.userId)],
+  (t) => [index("session_user_id_idx").on(t.userId)],
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -106,3 +98,113 @@ export const verificationTokens = createTable(
   }),
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
 );
+
+// ============================================================
+// Blogs
+// ============================================================
+
+export const blogs = createTable(
+  "blog",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    title: d.varchar({ length: 200 }).notNull(),
+    slug: d.varchar({ length: 100 }).notNull(),
+    excerpt: d.varchar({ length: 500 }),
+    content: d.text().notNull(),
+    coverImage: d.varchar({ length: 500 }),
+    status: d
+      .varchar({ length: 20 })
+      .notNull()
+      .default("draft"),
+    viewCount: d.integer().notNull().default(0),
+    createdById: d
+      .varchar({ length: 255 })
+      .notNull()
+      .references(() => users.id),
+    createdAt: d
+      .timestamp({ withTimezone: true })
+      .$defaultFn(() => new Date())
+      .notNull(),
+    updatedAt: d
+      .timestamp({ withTimezone: true })
+      .$defaultFn(() => new Date())
+      .$onUpdate(() => new Date()),
+    publishedAt: d.timestamp({ withTimezone: true }),
+  }),
+  (t) => [
+    uniqueIndex("blog_slug_idx").on(t.slug),
+    index("blog_status_published_idx").on(t.status, t.publishedAt),
+    index("blog_created_by_idx").on(t.createdById),
+    index("blog_created_at_idx").on(t.createdAt),
+  ],
+);
+
+export const blogsRelations = relations(blogs, ({ one, many }) => ({
+  author: one(users, { fields: [blogs.createdById], references: [users.id] }),
+  images: many(blogImages),
+  comments: many(comments),
+}));
+
+// ============================================================
+// Blog Images (max 6 per blog, enforced at API layer)
+// ============================================================
+
+export const blogImages = createTable(
+  "blog_image",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    blogId: d
+      .integer()
+      .notNull()
+      .references(() => blogs.id, { onDelete: "cascade" }),
+    url: d.varchar({ length: 500 }).notNull(),
+    alt: d.varchar({ length: 255 }),
+    displayOrder: d.integer().notNull().default(0),
+  }),
+  (t) => [index("blog_image_blog_id_idx").on(t.blogId)],
+);
+
+export const blogImagesRelations = relations(blogImages, ({ one }) => ({
+  blog: one(blogs, { fields: [blogImages.blogId], references: [blogs.id] }),
+}));
+
+// ============================================================
+// Comments (with reply thread via parentId)
+// ============================================================
+
+export const comments = createTable(
+  "comment",
+  (d) => ({
+    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    blogId: d
+      .integer()
+      .notNull()
+      .references(() => blogs.id, { onDelete: "cascade" }),
+    parentId: d.integer(),
+    authorName: d.varchar({ length: 100 }).notNull(),
+    content: d.varchar({ length: 1000 }).notNull(),
+    status: d
+      .varchar({ length: 20 })
+      .notNull()
+      .default("pending"),
+    createdAt: d
+      .timestamp({ withTimezone: true })
+      .$defaultFn(() => new Date())
+      .notNull(),
+  }),
+  (t) => [
+    index("comment_blog_status_idx").on(t.blogId, t.status),
+    index("comment_parent_idx").on(t.parentId),
+    index("comment_created_at_idx").on(t.createdAt),
+  ],
+);
+
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+  blog: one(blogs, { fields: [comments.blogId], references: [blogs.id] }),
+  parent: one(comments, {
+    fields: [comments.parentId],
+    references: [comments.id],
+    relationName: "commentReplies",
+  }),
+  replies: many(comments, { relationName: "commentReplies" }),
+}));
