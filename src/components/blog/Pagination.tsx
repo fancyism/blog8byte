@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { buildPageNumbers, buildPageUrl } from "~/lib/pagination";
 
 interface PaginationProps {
   currentPage: number;
@@ -21,32 +22,14 @@ export function Pagination({
 }: PaginationProps) {
   if (totalPages <= 1) return null;
 
-  const buildUrl = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", page.toString());
-    return `${baseUrl}?${params.toString()}`;
-  };
-
-  // Generate page numbers with ellipsis
-  const pages: (number | "...")[] = [];
-  for (let i = 1; i <= totalPages; i++) {
-    if (
-      i === 1 ||
-      i === totalPages ||
-      (i >= currentPage - 1 && i <= currentPage + 1)
-    ) {
-      pages.push(i);
-    } else if (pages[pages.length - 1] !== "...") {
-      pages.push("...");
-    }
-  }
+  const pages = buildPageNumbers(currentPage, totalPages);
 
   return (
     <nav className="flex items-center justify-center gap-1" aria-label="Pagination">
       {/* Prev */}
       {currentPage > 1 ? (
         <Link
-          href={buildUrl(currentPage - 1)}
+          href={buildPageUrl(currentPage - 1, baseUrl, searchParams)}
           className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Previous page"
         >
@@ -67,7 +50,7 @@ export function Pagination({
         ) : (
           <Link
             key={page}
-            href={buildUrl(page)}
+            href={buildPageUrl(page, baseUrl, searchParams)}
             className={`flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-colors ${
               page === currentPage
                 ? "bg-foreground text-background"
@@ -82,7 +65,7 @@ export function Pagination({
       {/* Next */}
       {currentPage < totalPages ? (
         <Link
-          href={buildUrl(currentPage + 1)}
+          href={buildPageUrl(currentPage + 1, baseUrl, searchParams)}
           className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Next page"
         >

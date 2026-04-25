@@ -83,7 +83,10 @@ export function BlogFeedClient({
 
         if (active) {
           setBlogs(payload.data);
-          setTotalPages(payload.meta?.totalPages ?? 1);
+          const apiTotalPages = payload.meta?.totalPages ?? 1;
+          // Never let totalPages drop below the current page,
+          // otherwise pagination buttons vanish mid-navigation.
+          setTotalPages(Math.max(apiTotalPages, page));
         }
       } catch (fetchError) {
         if (active) {
@@ -107,7 +110,10 @@ export function BlogFeedClient({
     };
   }, [initialBlogs, initialTotalPages, isDefaultFeed, page, search]);
 
-  if (isLoading) {
+  // During page transitions show a skeleton only when we have no blogs yet.
+  // If we already have blogs from a previous page, keep showing them
+  // (with pagination) instead of flashing a skeleton.
+  if (isLoading && blogs.length === 0) {
     return <BlogGridSkeleton count={6} />;
   }
 
