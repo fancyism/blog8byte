@@ -1,11 +1,43 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
 import "./src/env.js";
 
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+/** @type {any | null} */
+let r2RemotePattern = null;
+
+if (process.env.R2_PUBLIC_BASE_URL) {
+  try {
+    const r2PublicUrl = new URL(process.env.R2_PUBLIC_BASE_URL);
+    const normalizedPathname = r2PublicUrl.pathname.replace(/\/$/, "");
+
+    r2RemotePattern = {
+      protocol: r2PublicUrl.protocol.replace(":", ""),
+      hostname: r2PublicUrl.hostname,
+      pathname: normalizedPathname ? `${normalizedPathname}/**` : "/**",
+    };
+  } catch {
+    console.warn("Invalid R2_PUBLIC_BASE_URL; skipping Next Image remote pattern");
+  }
+}
+
 /** @type {import("next").NextConfig} */
 const config = {
+  outputFileTracingRoot: projectRoot,
+  turbopack: {
+    root: projectRoot,
+  },
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      ...(r2RemotePattern ? [r2RemotePattern] : []),
+    ],
+  },
   async headers() {
     return [
       {
